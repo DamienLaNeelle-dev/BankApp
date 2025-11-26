@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: BankApp
+  datasource:
+    url: jdbc:postgresql://localhost:5432/BankApp
+    username: postgres
+    password: Gunnersfan.33
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yaml

@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: BankApp-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: BankApp
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Gunnersfan.33
+    ports:
+      - "5432:5432"
+    volumes:
+      - BankApp-data:/var/lib/postgresql/data
+
+volumes:
+  BankApp-data:

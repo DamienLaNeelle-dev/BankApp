@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20231009000500
+      author: author
+      changes:
+        - createTable:
+            tableName: client
+            columns:
+              - column:
+                  name: id
+                  type: varchar(26)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: firstName
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lastName
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
