@@ -7,3 +7,18 @@ spring:
     password: Gunnersfan.33
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  springdoc:
+    api-docs:
+      enabled: true
+    swagger-ui:
+      enabled: true
+    packages-to-scan: your.package.driving.rest
+  openapi:
+    info:
+      title: BankApp API
+      version: 1.0.0
+      description: Documentation des APIs pour la gestion des clients et comptes bancaires.

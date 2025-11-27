@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil BankApp</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+<div x-data="clientsData()" x-init="init()">
+    <h1>Les clients</h1>
+
+    <div x-show="loading">
+        Chargement...
+    </div>
+    <div
+        x-show="error"
+        x-text="error"
+        style="color: red;"
+    >
+    </div>
+
+    <ul x-show="!loading && !error">
+        <template x-for="client in clients" :key="client.id">
+            <li x-text="client.firstName + ' ' + client.lastName"></li>
+        </template>
+    </ul>
+
+    <script src="/js/app.js"></script>
+</div>
+</body>
+</html>

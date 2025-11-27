@@ -13,26 +13,32 @@ import java.util.Optional;
 
 @Repository
 public class JdbcClientRepository implements ClientRepository {
+
     private final NamedParameterJdbcTemplate jdbcTemplate;
+
     private static final RowMapper<Client> CLIENT_MAPPER = (rs, rowNum) ->
             new Client(
                     rs.getString("id"),
-                    rs.getString("first_name"),
-                    rs.getString("last_name")
+                    rs.getString("firstName"),
+                    rs.getString("lastName")
             );
+
     public JdbcClientRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public List<Client> findAll() {
-        return jdbcTemplate.query("SELECT (id, last_name, first_name) FROM client", CLIENT_MAPPER);
+        return jdbcTemplate.query(
+                "SELECT id, \"firstName\", \"lastName\" FROM client",
+                CLIENT_MAPPER
+        );
     }
 
     @Override
     public boolean existsBy(String firstName, String lastName) {
         Integer count = jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM client WHERE lower(first_name) = :firstName AND lower(last_name) = :lastName",
+                "SELECT COUNT(*) FROM client WHERE lower(\"firstName\") = lower(:firstName) AND lower(\"lastName\") = lower(:lastName)",
                 Map.of("firstName", firstName, "lastName", lastName),
                 Integer.class
         );
@@ -42,7 +48,7 @@ public class JdbcClientRepository implements ClientRepository {
     @Override
     public Client add(Client client) {
         jdbcTemplate.update(
-                "INSERT INTO client (id, first_name, last_name) VALUES (:id, :firstName, :lastName)",
+                "INSERT INTO client (id, \"firstName\", \"lastName\") VALUES (:id, :firstName, :lastName)",
                 Map.of(
                         "id", client.id(),
                         "firstName", client.firstName(),
@@ -56,18 +62,14 @@ public class JdbcClientRepository implements ClientRepository {
     public Optional<Client> findById(String id) {
         try {
             Client client = jdbcTemplate.queryForObject(
-                    "SELECT id, first_name, last_name FROM client WHERE id = :id",
+                    "SELECT id, \"firstName\", \"lastName\" FROM client WHERE id = :id",
                     Map.of("id", id),
-                    (rs, rowNum) -> new Client(
-                            rs.getString("id"),
-                            rs.getString("first_name"),
-                            rs.getString("last_name")
-                    )
+                    CLIENT_MAPPER
             );
             return Optional.of(client);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
-
 }
+

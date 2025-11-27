@@ -22,3 +22,48 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
+
+  - changeSet:
+      id: 20250227120000
+      author: author
+      changes:
+        - createTable:
+            tableName: account_entity
+            columns:
+              - column:
+                  name: id
+                  type: varchar(26)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: type
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: balance
+                  type: decimal(19,2)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: client_id
+                  type: varchar(26)
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: account_entity
+            baseColumnNames: client_id
+            referencedTableName: client
+            referencedColumnNames: id
+            constraintName: fk_account_client
