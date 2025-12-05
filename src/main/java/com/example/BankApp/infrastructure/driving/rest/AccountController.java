@@ -14,8 +14,9 @@ import java.util.stream.Collectors;
 
 @RestController
 @Tag(name = "Accounts", description = "Gestion des comptes bancaires")
-@RequestMapping("/clients/{ClientId}/accounts")
+@RequestMapping("/api/clients/{id}/accounts")
 public class AccountController {
+
     private final CreateAccount createAccount;
     private final ListAccounts listAccounts;
 
@@ -25,24 +26,25 @@ public class AccountController {
     }
 
     @PostMapping
-    @Operation(summary = "Créer un compte", description = "Créer un nouveau compte bancaire pour un client")
-    @ApiResponse(responseCode = "201", description = "Compte créé avec succès")
-    @ApiResponse(responseCode = "404", description = "Client introuvable")
-    public AccountDTO createAccount(@PathVariable String clientId, @RequestBody CreateAccountRequest request) {
+    @Operation(summary = "Créer un compte")
+    @ApiResponse(responseCode = "201")
+    public AccountDTO createAccount(
+            @PathVariable("id") String clientId,   // ← correction ici
+            @RequestBody CreateAccountRequest request
+    ) {
         var account = createAccount.execute(clientId, request.name(), request.type(), request.balance());
         return new AccountDTO(account.getId(), account.getName(), account.getType(), account.getBalance());
     }
 
     @GetMapping
-    @Operation(
-            summary = "Lister les comptes d’un client",
-            description = "Retourne tous les comptes bancaires d’un client."
-    )
-    @ApiResponse(responseCode = "200", description = "Liste des comptes")
-    public List<AccountDTO> listAccounts(@PathVariable String clientId) {
+    @Operation(summary = "Lister les comptes d’un client")
+    @ApiResponse(responseCode = "200")
+    public List<AccountDTO> listAccounts(
+            @PathVariable("id") String clientId    // ← correction ici aussi
+    ) {
         return listAccounts.execute(clientId)
                 .stream()
                 .map(a -> new AccountDTO(a.getId(), a.getName(), a.getType(), a.getBalance()))
-                .collect(Collectors.toList());
+                .toList();
     }
 }

@@ -1,11 +1,9 @@
 package com.example.BankApp.infrastructure.application.config;
 
 import com.example.BankApp.domain.port.ClientRepository;
+import com.example.BankApp.domain.port.StockPriceRepository;
 import com.example.BankApp.domain.port.driven.AccountRepository;
-import com.example.BankApp.domain.usecase.CreateAccount;
-import com.example.BankApp.domain.usecase.CreateClient;
-import com.example.BankApp.domain.usecase.ListAccounts;
-import com.example.BankApp.domain.usecase.ListClients;
+import com.example.BankApp.domain.usecase.*;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,5 +29,10 @@ public class UseCaseConfiguration {
     @Bean
     public ListClients listClients(ClientRepository repository) {
         return new ListClients(repository);
+    }
+
+    @Bean
+    public ListStockPrices listStockPrices(StockPriceRepository repository) {
+        return new ListStockPrices(repository);
     }
 }

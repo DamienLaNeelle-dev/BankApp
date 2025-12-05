@@ -24,6 +24,16 @@ public class PageController {
 
     @GetMapping("/clients/{id}")
         public String accounts(@PathVariable String id, Model model){
+        var optionalClient = clientRepository.findById(id);
+
+        if (optionalClient.isPresent()) {
+            var client = optionalClient.get();
+            model.addAttribute("clientId", id);
+            model.addAttribute("firstName", client.firstName());
+            model.addAttribute("lastName", client.lastName());
+        } else{
+            return "redirect:/";
+        }
         return "accounts";
     }
 

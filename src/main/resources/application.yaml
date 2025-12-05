@@ -7,6 +7,8 @@ spring:
     password: Gunnersfan.33
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
+    enabled: true
+    clear-check-sums: true
   jpa:
     hibernate:
       ddl-auto: validate

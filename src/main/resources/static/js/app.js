@@ -19,3 +19,28 @@ function clientsData(){
         }
     }
 }
+
+function accountsData(clientId){
+    return {
+        clientId: clientId,
+        accounts: [],
+        error: null,
+
+        init() {
+            console.log("ClientId : ", this.clientId)
+            fetch(`/api/clients/${this.clientId}/accounts`)
+                .then(r => r.json())
+                .then(data => {
+                    this.accounts = data;
+                })
+                .catch(e => {
+                    this.error = e.message;
+                });
+        }
+
+    }
+}
+
+
+
+

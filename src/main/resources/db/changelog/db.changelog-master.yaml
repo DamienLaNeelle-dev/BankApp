@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: varchar(26)
+                  type: varchar(36)
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -32,32 +32,28 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: varchar(26)
+                  type: varchar(36)
                   constraints:
                     primaryKey: true
                     nullable: false
-
               - column:
                   name: name
                   type: varchar(255)
                   constraints:
                     nullable: false
-
               - column:
                   name: type
                   type: varchar(50)
                   constraints:
                     nullable: false
-
               - column:
                   name: balance
                   type: decimal(19,2)
                   constraints:
                     nullable: false
-
               - column:
                   name: client_id
-                  type: varchar(26)
+                  type: varchar(36)
                   constraints:
                     nullable: false
 
@@ -67,3 +63,54 @@ databaseChangeLog:
             referencedTableName: client
             referencedColumnNames: id
             constraintName: fk_account_client
+
+  - changeSet:
+      id: 20251127000100
+      author: author
+      changes:
+        - modifyDataType:
+            tableName: client
+            columnName: id
+            newDataType: varchar(36)
+
+        - modifyDataType:
+            tableName: account_entity
+            columnName: id
+            newDataType: varchar(36)
+
+        - modifyDataType:
+            tableName: account_entity
+            columnName: client_id
+            newDataType: varchar(36)
+
+  - changeSet:
+      id: stockprice-001
+      author: you
+      changes:
+        - createTable:
+            tableName: stock_price
+            columns:
+              - column:
+                  name: id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: symbol
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: price
+                  type: decimal(10,2)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: last_updated
+                  type: timestamp
+                  constraints:
+                    nullable: false
