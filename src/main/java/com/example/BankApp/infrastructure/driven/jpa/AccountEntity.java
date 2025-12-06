@@ -1,34 +1,31 @@
 package com.example.BankApp.infrastructure.driven.jpa;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "account_entity")
 @Getter
 @Setter
-@Entity
-@Table
+@NoArgsConstructor
+@AllArgsConstructor
 public class AccountEntity {
+
     @Id
+    @Column(length = 36)
     private String id;
 
-    private String clientId;
+    @Column(name = "client_id", length = 36, nullable = false)
+    private String clientId;  // ← String clientId, pas Client
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(length = 50, nullable = false)
     private String type;
+
+    @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal balance;
-
-    public AccountEntity() {}
-    public AccountEntity(String id, String clientId, String name, String type, BigDecimal balance) {
-        this.id = id;
-        this.clientId = clientId;
-        this.name = name;
-        this.type = type;
-        this.balance = balance;
-    }
-
 }

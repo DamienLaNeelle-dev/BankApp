@@ -13,6 +13,7 @@
 <div x-data="accountsData($el.dataset.clientId)"
      th:data-client-id="${clientId}"
      x-init="init()">
+
     <h1 x-text="client ? `Comptes de ${client.firstName} ${client.lastName}` : ''"></h1>
 
     <table class="table">
@@ -35,6 +36,16 @@
         </template>
         </tbody>
     </table>
+
+    <!-- Nouveau compte -->
+    <div class="mb-3">
+        <p>Ajouter un compte :</p>
+        <input type="text" x-model="newAccount.name" placeholder="Nom du compte" class="form-control mb-1">
+        <input type="text" x-model="newAccount.type" placeholder="Type de compte" class="form-control mb-1">
+        <input type="number" x-model="newAccount.balance" placeholder="Solde initial" class="form-control mb-1">
+        <button @click="createAccount()" class="btn btn-primary btn-sm">Créer un compte</button>
+    </div>
+
     <a :href="`/`" class="btn btn-secondary btn-sm">Retour aux clients</a>
 </div>
 

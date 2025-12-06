@@ -1,24 +1,26 @@
 package com.example.BankApp.domain.usecase;
 
-import com.example.BankApp.domain.exception.ClientAlreadyExistsException;
 import com.example.BankApp.domain.model.Client;
-import com.example.BankApp.domain.port.ClientRepository;
+import com.example.BankApp.domain.port.driven.ClientRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
+@RequiredArgsConstructor
 public class CreateClient {
 
     private final ClientRepository repository;
 
-    public CreateClient(ClientRepository repository) {
-        this.repository = repository;
-    }
+    public Client execute(String firstName, String lastName) {
 
-    public Client handle(String firstName, String lastName) {
-        if (repository.existsBy(firstName, lastName)) {
-            throw new ClientAlreadyExistsException(firstName, lastName);
+        if (repository.existsByFirstNameAndLastName(firstName, lastName)) {
+            throw new IllegalArgumentException("Client déjà existant");
         }
 
-        Client client = new Client(firstName, lastName);
+        Client client = new Client();
+        client.setFirstName(firstName);
+        client.setLastName(lastName);
 
-        return repository.add(client);
+        return repository.save(client);
     }
 }

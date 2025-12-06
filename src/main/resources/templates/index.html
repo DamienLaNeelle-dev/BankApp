@@ -1,54 +1,72 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Accueil BankApp</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </head>
 <body>
-<div x-data="clientsData()" x-init="init()">
-    <h1>Les clients</h1>
+<div class="container mt-4" x-data="appData()" x-init="init()">
 
-    <div x-show="loading">
-        Chargement...
-    </div>
-    <div
-        x-show="error"
-        x-text="error"
-        style="color: red;"
-    >
+    <!-- Navigation -->
+    <div class="mb-3" x-show="!connectedClient && !loading">
+        <a href="/login" class="btn btn-success">Se connecter</a>
+        <a href="/register" class="btn btn-secondary">S'inscrire</a>
     </div>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Prénom</th>
-            <th scope="col">Nom</th>
-            <th scope="col">Comptes</th>
-        </tr>
-        </thead>
-        <tbody>
-        <template x-for="(client, index) in clients" :key="client.id">
+    <div class="mb-3" x-show="connectedClient && !loading">
+        <span class="me-3">Connecté en tant que <strong x-text="connectedClient.firstName + ' ' + connectedClient.lastName"></strong></span>
+        <button @click="logout()" class="btn btn-danger">Déconnexion</button>
+    </div>
+
+    <!-- Vue comptes client -->
+    <div x-show="connectedClient && !loading">
+        <h1>Mes comptes bancaires</h1>
+
+        <table class="table" x-show="accounts.length > 0">
+            <thead>
             <tr>
-                <th scope="row" x-text="index + 1"></th>
-                <td x-text="client.firstName"></td>
-                <td x-text="client.lastName"></td>
-                <td>
-                    <a :href="`/clients/${client.id}`" class="btn btn-primary btn-sm">Voir les comptes</a>
-                </td>
+                <th>#</th>
+                <th>Nom du compte</th>
+                <th>Type de compte</th>
+                <th>Solde</th>
             </tr>
-        </template>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <template x-for="(account, index) in accounts" :key="account.id">
+                <tr>
+                    <th x-text="index + 1"></th>
+                    <td x-text="account.name"></td>
+                    <td x-text="account.type"></td>
+                    <td x-text="account.balance + ' €'"></td>
+                </tr>
+            </template>
+            </tbody>
+        </table>
 
-    <a href="/stocks" class="btn btn-success mb-3">Voir les cours de la bourse</a>
+        <div x-show="accounts.length === 0" class="alert alert-info">
+            Vous n'avez pas encore de compte bancaire. Créez-en un ci-dessous !
+        </div>
 
+        <!-- Nouveau compte -->
+        <div class="mb-3">
+            <h3>Ajouter un compte</h3>
+            <input type="text" x-model="newAccount.name" placeholder="Nom du compte" class="form-control mb-2">
+            <input type="text" x-model="newAccount.type" placeholder="Type de compte (ex: Courant, Épargne)" class="form-control mb-2">
+            <input type="number" x-model="newAccount.balance" placeholder="Solde initial" class="form-control mb-2">
+            <button @click="createAccount()" class="btn btn-primary">Créer un compte</button>
+        </div>
+    </div>
 
-    <script src="/js/app.js"></script>
+    <div x-show="loading" class="text-center">
+        <div class="spinner-border" role="status"><span class="visually-hidden">Chargement...</span></div>
+    </div>
+
+    <div x-show="error" x-text="error" class="alert alert-danger mt-3"></div>
 </div>
+
+<script src="/js/app.js"></script>
 </body>
 </html>

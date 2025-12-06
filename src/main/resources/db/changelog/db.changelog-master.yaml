@@ -96,21 +96,79 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     nullable: false
-
               - column:
                   name: symbol
                   type: varchar(50)
                   constraints:
                     nullable: false
-
               - column:
                   name: price
                   type: decimal(10,2)
                   constraints:
                     nullable: false
-
               - column:
                   name: last_updated
                   type: timestamp
                   constraints:
                     nullable: false
+
+  - changeSet:
+      id: 20251206000500
+      author: damie
+      changes:
+        - addColumn:
+            tableName: client
+            columns:
+              - column:
+                  name: username
+                  type: varchar(50)
+              - column:
+                  name: email
+                  type: varchar(100)
+              - column:
+                  name: password
+                  type: varchar(255)
+              - column:
+                  name: role
+                  type: varchar(50)
+                  defaultValue: 'USER'
+              - column:
+                  name: enabled
+                  type: boolean
+                  defaultValueBoolean: true
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+        - addUniqueConstraint:
+            tableName: client
+            columnNames: username
+            constraintName: uk_client_username
+
+        - addUniqueConstraint:
+            tableName: client
+            columnNames: email
+            constraintName: uk_client_email
+
+  - changeSet:
+      id: 20251206000600
+      author: damie
+      changes:
+        # Renommer firstName en first_name
+        - renameColumn:
+            tableName: client
+            oldColumnName: firstName
+            newColumnName: first_name
+            columnDataType: varchar(255)
+
+        # Renommer lastName en last_name
+        - renameColumn:
+            tableName: client
+            oldColumnName: lastName
+            newColumnName: last_name
+            columnDataType: varchar(255)

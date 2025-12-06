@@ -1,6 +1,6 @@
 package com.example.BankApp.infrastructure.driving.web;
 
-import com.example.BankApp.domain.port.ClientRepository;
+import com.example.BankApp.domain.port.driven.ClientRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,20 +22,33 @@ public class PageController {
         return "index";
     }
 
-    @GetMapping("/clients/{id}")
-        public String accounts(@PathVariable String id, Model model){
-        var optionalClient = clientRepository.findById(id);
+    //@GetMapping("/clients/{id}")
+   // public String accounts(@PathVariable String id, Model model){
+   //     var optionalClient = clientRepository.findById(id);
+//
+   //      if (optionalClient.isPresent()) {
+     //       var client = optionalClient.get();
+       //     model.addAttribute("clientId", id);
+         //   model.addAttribute("firstName", client.firstName());
+   //         model.addAttribute("lastName", client.lastName());
+     //   } else{
+     //       return "redirect:/";
+      //  }
+      //  return "accounts";
+   // }
 
-        if (optionalClient.isPresent()) {
-            var client = optionalClient.get();
-            model.addAttribute("clientId", id);
-            model.addAttribute("firstName", client.firstName());
-            model.addAttribute("lastName", client.lastName());
-        } else{
-            return "redirect:/";
-        }
-        return "accounts";
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
     }
 
+    @GetMapping("/register")
+    public String registerPage() {
+        return "register";
+    }
 
+    @GetMapping("/stocks")
+    public String stocksPage() {
+        return "stocks";
+    }
 }

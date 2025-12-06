@@ -1,7 +1,8 @@
 package com.example.BankApp.domain.usecase;
 
 import com.example.BankApp.domain.model.Client;
-import com.example.BankApp.domain.port.ClientRepository;
+import com.example.BankApp.domain.port.driven.ClientRepository;
+
 import java.util.List;
 
 public class ListClients {

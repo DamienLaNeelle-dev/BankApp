@@ -33,7 +33,13 @@ public class JpaAccountRepository implements AccountRepository {
     public List<Account> findByClientId(String clientId) {
         return jpaRepository.findByClientId(clientId)
                 .stream()
-                .map(e -> new Account(e.getClientId(), e.getName(), e.getType(), e.getBalance()))
+                .map(e -> new Account(
+                        e.getId(),           // ← Constructeur complet (5 paramètres)
+                        e.getClientId(),
+                        e.getName(),
+                        e.getType(),
+                        e.getBalance()
+                ))
                 .collect(Collectors.toList());
     }
 }

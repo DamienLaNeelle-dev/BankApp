@@ -1,7 +1,9 @@
 package com.example.BankApp.infrastructure.driving.rest.dto;
 
-public record ClientDTO(
-        String id,
+public record RegisterRequest(
+        String username,
+        String email,
+        String password,
         String firstName,
         String lastName
-) {}  // ← Seulement 3 champs
+) {}
